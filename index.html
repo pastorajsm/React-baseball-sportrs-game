@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baseball-sports-game</title>
+    <link rel="stylesheet" href="./style.css">
+
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <script type="text/babel">
+
+        class Team extends React.Component {
+            constructor(props) {
+                super(props)
+
+                this.state = {
+                    shots: 0,
+                    score: 0,
+                    name: props.name,
+                    logo: props.logo
+
+
+                }
+
+                this.shotSound = new Audio("./audio/Back+Board.mp3")
+
+                this.scoreSound = new Audio("./audio/Swish.mp3")
+
+            }
+
+            shoot = (event) => {
+                console.log("shoot")
+                let score = this.state.score
+                this.shotSound.play()
+
+                if (Math.random() > 0.5) {
+                    score += 1
+                    this.scoreSound.play()
+
+                    setTimeout(() => {
+                        this.scoreSound.play()
+                    }), 100
+
+                }
+
+                this.setState(state => ({ shots: state.shots + 1, score }))
+
+
+
+            }
+
+
+
+            score = (event) => {
+                console.log("score")
+
+            }
+
+            render() {
+                let shotPercentageDiv
+                if (this.state.shots) {
+
+                    const shotPercentage = this.state.score / this.state.shots * 100
+                    shotPercentageDiv = (
+                        <div>
+                            <strong>Shooting %: {shotPercentage}</strong>
+
+                        </div>
+
+                    )
+                }
+                return (
+
+                    <div>
+                        <h3>{this.state.name}</h3>
+                        <img src={this.state.logo} alt="" />
+                        <p>Shots Taken: {this.state.shots}</p>
+                        <p>Score Made: {this.state.score}</p>
+                        <button onClick={this.shoot}>Take the shot!</button>
+                        {shotPercentageDiv}
+
+
+                    </div >
+
+
+
+
+
+                )
+            }
+
+        }
+
+        function Game(props) {
+            return (
+                <div className="Game"></div>
+            )
+
+        }
+
+        function App(props) {
+            return (
+                <div>
+                    <h1>Welcome to Romulus High Arena{props.venue}</h1>
+                    <div className="stats">
+                        <Game venue="Romulus High 5120 S Wayne" />
+
+                        <Team name="Romulus Eagles" logo="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcT5SUQQAh8Te6B72-R4fWExrarP2xVGwJBzdQ&usqp=CAU" />
+                        <div className="versus">
+
+                            <h1>VS</h1>
+
+
+
+
+                        </div>
+                        <Team name="Belleville Bears" logo="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSocGJ3djkmWcCLeMWpqdwf0zXvmAe12SF1Yw&usqp=CAU" />
+
+                    </div>
+                </div>
+            )
+        }
+
+        ReactDOM.render(
+            <App />, document.getElementById("root"))
+
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>
